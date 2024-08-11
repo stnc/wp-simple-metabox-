@@ -2804,7 +2804,9 @@ main {
 }
 
 
-
+/**
+ * STNC OVERRIDE 
+ */
 
 
 
@@ -2857,3 +2859,16 @@ main {
 }
 
 .ss-metabox-form2 div{margin-bottom: 15px;}
+
+
+.pico input:not([type="checkbox"], [type="radio"]), .pico button[type="submit"], .pico select, .pico textarea {
+  width: 60%;
+}
+
+
+
+.pico input, .pico optgroup, .pico select, .pico textarea {
+
+  font-size: 14px;
+
+}
