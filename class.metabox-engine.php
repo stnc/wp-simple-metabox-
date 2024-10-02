@@ -11,7 +11,7 @@ class ssSytemMetaboxEngine
 	private $fields;
 	private $current_id;
 	private $SaveMethodSingle;
-	private $stncMBmeta_key_debate = 'ss-setting'; 
+	private $stncMBmeta_key_debate = 'ss-setting'; // TODO : changes name 
 
 	public function __construct($fields, $stncMBmeta_key_debate, $SaveMethodSingle = false)
 	{
@@ -111,23 +111,28 @@ class ssSytemMetaboxEngine
 		$fields = ($field_arg['args']);
 		// wp_nonce_field('my_meta_box_nonce', 'meta_box_nonce');
 		echo '<input type="hidden" name="' . $this->nonce . '" value="', wp_create_nonce(basename(__FILE__)), '" />';
-		echo '<div class="pico ss-metabox-form2" style="' . $fields['style'] . '"  class="' . $fields['class'] . $fields['name'] . '"><section class="grid3">';
+		echo '<div class="--pico ss-metabox-form  stnc-grid '.$fields['class'].' " style="' . $fields['style'] . '"  name="'. $fields['name'] . '">
+	    <div  class="row">
+	
+	     <section  class="col-md-6 col-sm-6" >
+	    
+		';
 
 		if ($fields['title_h2']) {
-			echo '<div><h2  data-required="pageSetting_background_repeat"><strong>' . $fields['title'] . '</strong></h2> </div>';
+			echo ' <div  class="form-group"><h2  data-required="pageSetting_background_repeat"><strong>' . $fields['title'] . '</strong></h2> </div>';
 		}
 
 		foreach ($fields['fields'] as $key => $values) {
 
 			switch ($values['type']) {
 				case 'info':
-					echo '<div class="' . $values['class_li'] . '"  id="' . $values['name'] . '_li"> <h2><strong>' . $values['title'] . '</strong></h2>  <br>   <div style="padding-left: 15px;">' . $values['description'] . '</div>     <hr>   </div>';
+					echo '<div class="form-group ' . $values['class_li'] . '"  id="' . $values['name'] . '_li"> <h2><strong>' . $values['title'] . '</strong></h2>  <br>   <div style="padding-left: 15px;">' . $values['description'] . '</div>     <hr>   </div>';
 					break;
 
 
 
 				case 'select':
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
+					echo '<div class="form-group ' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
                 <select  style="' . $values['style'] . '"  class="' . $values['class'] . '"  name="' . $values['name'] . '" id="' . $values['name'] . '">
                 ' . $this->post_options_select($values['values'], $values['name']) . '
                 </select>
@@ -137,13 +142,13 @@ class ssSytemMetaboxEngine
 
 
 				case 'textarea':
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
+					echo ' <div class=" form-group' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
                  <textarea name="' . $values['name'] . '" class="' . $values['class'] . '" style="' . $values['style'] . '"  id="' . $values['name'] . '" cols="40" rows="6" >' . $this->get_meta($values['name']) . '</textarea>
                ' . $this->post_options_description($values['description']) . '</div>';
 					break;
 
 				case 'text':
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
+					echo ' <div class="form-group ' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
               <input type="text" value="' . $this->get_meta($values['name']) . '" class="' . $values['class'] . '" style="' . $values['style'] . '"  name="' . $values['name'] . '" id="' . $values['name'] . '"/>
                ' . $this->post_options_description($values['description']) . '</div>';
 					break;
@@ -156,7 +161,7 @@ class ssSytemMetaboxEngine
 
 
 				case 'checkbox':
-					echo '<div id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
+					echo ' <div class=" form-group  ' . $values['class_li'] . '" id="' . $values['name'] . '"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
               <input type="checkbox" value="on"  ' . $this->post_options_checked($values['name']) . '   class="' . $values['class'] . '" style="' . $values['style'] . '"  name="' . $values['name'] . '" id="' . $values['name'] . '"/>
                ' . $this->post_options_description($values['description']) . '</div>';
 					break;
@@ -165,26 +170,26 @@ class ssSytemMetaboxEngine
 
 
 				case 'radio':
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '"><fieldset><legend class="' . $values['class'] . '" id="' . $values['name'] . '_li"><strong>' . $values['title'] . '</strong></legend>';
+					echo ' <div class=" form-group  ' . $values['class_li'] . '" id="' . $values['name'] . '"><fieldset><legend class="' . $values['class'] . '" id="' . $values['name'] . '_li"><strong>' . $values['title'] . '</strong></legend>';
 					foreach ($values['values'] as $key => $value) {
 						echo '<label for="' . $values['name'] . $key . '">';
 						echo ' <input id="' . $values['name'] . $key . '" type="radio" value="' . $key . '"  ' . $this->post_options_radio($values['name'], $key) . '    name="' . $values['name'] . '" />';
 						echo $value;
 						echo '</label>';
 					}
-					echo $this->post_options_description($values['description']) . '</div></fieldset>';
+					echo $this->post_options_description($values['description']) . '</fieldset></div>';
 					break;
 
 		
 					case 'switch':
-						echo '<div id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
+						echo ' <div  class="form-group"><div id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
 				  <input type="checkbox" role="switch" value="on"  ' . $this->post_options_checked($values['name']) . '   class="' . $values['class'] . '" style="' . $values['style'] . '"  name="' . $values['name'] . '" id="' . $values['name'] . '"/>
-				   ' . $this->post_options_description($values['description']) . '</div>';
+				   ' . $this->post_options_description($values['description']) . '</div></div>';
 						break;
 
 
 				case 'color':
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li">
+					echo '<div class=" form-group ' . $values['class_li'] . '" id="' . $values['name'] . '_li">
 					<label for="' . $values['name'] . '">' . $values['title'] . '</label>
               <input type="color" value="' . $this->get_meta($values['name']) . '"  class="' . $values['class'] . '" style="' . $values['style'] .'" name="' . $values['name'] . '" id="' . $values['name'] . '"/>
                ' . $this->post_options_description($values['description']) . '</div>';
@@ -192,7 +197,7 @@ class ssSytemMetaboxEngine
 
 
 					case 'date':
-						echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li">
+						echo '<div class=" form-group ' . $values['class_li'] . '" id="' . $values['name'] . '_li">
 						<label for="' . $values['name'] . '">' . $values['title'] . '</label>
 				  <input type="date" value="' . $this->get_meta($values['name']) . '"  class="' . $values['class'] . '" style="' . $values['style'] . '" name="' . $values['name'] . '" id="' . $values['name'] . '"/>
 				   ' . $this->post_options_description($values['description']) . '</div>';
@@ -203,7 +208,7 @@ class ssSytemMetaboxEngine
 					//TODO: future #important
 				/*UPLOAD */
 				case 'upload':
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
+					echo '<div class="form-group ' . $values['class_li'] . '" id="' . $values['name'] . '_li"><label for="' . $values['name'] . '">' . $values['title'] . '</label>
               <input type="text" value="' . $this->get_meta($values['name']) . '"  class="' . $values['class'] . '" style="display:none;' . $values['style'] . '" name="' . $values['name'] . '" id="' . $values['name'] . '"/>
               <input  id="' . $values['name'] . '_extra"   class="page_upload_trigger_element button button-primary button-large" name="' . $values['name'] . '_extra" type="button" value="' . $values['button_text'] . '" />
         ' . $this->post_options_description($values['description']) . '
@@ -253,7 +258,7 @@ class ssSytemMetaboxEngine
 							$pictures .= '<div class="single-image" ><div class="delete"> X</div ><img data-id="' . $imagesBUll . '" src="' . $imagewow[0] . '" alt="sd"/></div >';
 						endforeach;
 					endif;
-					echo '<div class="' . $values['class_li'] . '" id="' . $values['name'] . '_li">
+					echo ' <div class=" form-group ' . $values['class_li'] . '" id="' . $values['name'] . '_li">
                                 <div class="drop_meta_item gallery">
 	                            <label for="' . $values['name'] . '">' . $values['title'] . '</label>
 	                            <div class="st_studio-metadata">
@@ -265,11 +270,11 @@ class ssSytemMetaboxEngine
 	                            </div>
 	                            </div>
 	                            </div>
-	                      </div>';
+	                     </div>';
 					break;
 			}
 		}
-		echo '  </section>
+		echo '</div>  <div  class="col-md-6 col-sm-6"> </div>       </section>  </div>
     </div>';
 	}
 
